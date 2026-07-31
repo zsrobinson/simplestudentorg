@@ -16,5 +16,11 @@
       "migrations_pattern": "drizzle/*/migration.sql",
       "remote": true
     }
+  ],
+  "send_email": [
+    {
+      "name": "EMAIL",
+      "remote": true
+    }
   ]
 }
