@@ -1,8 +1,4 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useState } from "react";
-import { Button } from "~/components/ui/button";
-import { Input } from "~/components/ui/input";
-import { authClient } from "~/lib/auth-client";
 import { getSession } from "~/lib/auth-functions";
 
 export const Route = createFileRoute("/")({
@@ -17,40 +13,13 @@ function Home() {
   const { user } = Route.useRouteContext();
 
   return (
-    <div className="p-8 max-w-4xl m-auto flex flex-col gap-4">
-      <h1 className="text-2xl font-semibold">Simple Student Org</h1>
+    <main className="p-4 flex flex-col gap-4">
+      <p>Welcome to Simple Student Org!</p>
       {user ? (
-        <>
-          <p>You are currently logged in as {user.email}.</p>
-          <Button onClick={() => authClient.signOut()}>Sign Out</Button>
-        </>
+        <p>You are currently logged in as {user.email}.</p>
       ) : (
-        <>
-          <p>You are not currently logged in.</p>
-          <MagicLinkForm />
-        </>
+        <p>You are not currently logged in.</p>
       )}
-    </div>
-  );
-}
-
-function MagicLinkForm() {
-  const [email, setEmail] = useState("");
-
-  return (
-    <div className="flex gap-2">
-      <Input
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        placeholder="Email"
-      />
-      <Button
-        onClick={async () => {
-          await authClient.signIn.magicLink({ email });
-        }}
-      >
-        Submit
-      </Button>
-    </div>
+    </main>
   );
 }

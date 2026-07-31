@@ -1,8 +1,9 @@
 import { env } from "cloudflare:workers";
 import { drizzleAdapter } from "@better-auth/drizzle-adapter/relations-v2";
 import { betterAuth } from "better-auth";
-import { magicLink } from "better-auth/plugins";
+import { emailOTP } from "better-auth/plugins";
 import { tanstackStartCookies } from "better-auth/tanstack-start";
+import { ResultAsync } from "neverthrow";
 import { db } from "~/db";
 import { account, session, user, verification } from "~/db/auth-schema";
 
@@ -12,19 +13,28 @@ export const auth = betterAuth({
     schema: { user, session, account, verification },
   }),
 
-  // tanstackStartCookies should be last in the array, apparently
+  // tanstackStartCookies should always be last in the array, apparently
   plugins: [
-    magicLink({
-      sendMagicLink: async ({ email, url }) => {
-        const { messageId } = await env.EMAIL.send({
+    emailOTP({
+      async sendVerificationOTP({ email, otp, type }) {
+        const send = ResultAsync.fromThrowable(env.EMAIL.send);
+
+        const result = await send({
           to: email,
-          from: "login@simplestudent.org",
-          subject: "Your magic link for Simple Student Org",
+          from: "auth@simplestudent.org",
+          subject: `Simple Student Org Code: ${otp}`,
           html: `<h1>Simple Student Org</h1>
-            <p>To log in, follow this link:</p>
-            <a href="${url}">${url}</a>`,
+            <p>Your ${type.replaceAll("-", " ")} code is ${otp}.</p>`,
         });
-        console.log("Send magic link email", { messageId });
+
+        result.match(
+          ({ messageId }) => {
+            console.log("Sent OTP email", { email, type, messageId });
+          },
+          (error) => {
+            console.error("Error sending OTP email", { email, type, error });
+          },
+        );
       },
     }),
     tanstackStartCookies(),
