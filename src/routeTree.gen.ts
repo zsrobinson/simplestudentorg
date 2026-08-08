@@ -15,7 +15,7 @@ import { Route as authLoginRouteImport } from './routes/(auth)/login'
 import { Route as authOtpRouteImport } from './routes/(auth)/otp'
 import { Route as AppOrgRouteRouteImport } from './routes/_app/$org/route'
 import { Route as AppAppRouteImport } from './routes/_app/app'
-import { Route as AppNewRouteImport } from './routes/_app/new'
+import { Route as AppCreateRouteImport } from './routes/_app/create'
 import { Route as AppOrgIndexRouteImport } from './routes/_app/$org/index'
 import { Route as AppOrgCalendarRouteImport } from './routes/_app/$org/calendar'
 import { Route as AppOrgLoremRouteImport } from './routes/_app/$org/lorem'
@@ -50,9 +50,9 @@ const AppAppRoute = AppAppRouteImport.update({
   path: '/app',
   getParentRoute: () => AppRouteRoute,
 } as any)
-const AppNewRoute = AppNewRouteImport.update({
-  id: '/new',
-  path: '/new',
+const AppCreateRoute = AppCreateRouteImport.update({
+  id: '/create',
+  path: '/create',
   getParentRoute: () => AppRouteRoute,
 } as any)
 const AppOrgIndexRoute = AppOrgIndexRouteImport.update({
@@ -82,7 +82,7 @@ export interface FileRoutesByFullPath {
   '/login': typeof authLoginRoute
   '/otp': typeof authOtpRoute
   '/app': typeof AppAppRoute
-  '/new': typeof AppNewRoute
+  '/create': typeof AppCreateRoute
   '/$org/calendar': typeof AppOrgCalendarRoute
   '/$org/lorem': typeof AppOrgLoremRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
@@ -93,7 +93,7 @@ export interface FileRoutesByTo {
   '/login': typeof authLoginRoute
   '/otp': typeof authOtpRoute
   '/app': typeof AppAppRoute
-  '/new': typeof AppNewRoute
+  '/create': typeof AppCreateRoute
   '/$org/calendar': typeof AppOrgCalendarRoute
   '/$org/lorem': typeof AppOrgLoremRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
@@ -107,7 +107,7 @@ export interface FileRoutesById {
   '/(auth)/login': typeof authLoginRoute
   '/(auth)/otp': typeof authOtpRoute
   '/_app/app': typeof AppAppRoute
-  '/_app/new': typeof AppNewRoute
+  '/_app/create': typeof AppCreateRoute
   '/_app/$org/calendar': typeof AppOrgCalendarRoute
   '/_app/$org/lorem': typeof AppOrgLoremRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
@@ -121,7 +121,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/otp'
     | '/app'
-    | '/new'
+    | '/create'
     | '/$org/calendar'
     | '/$org/lorem'
     | '/api/auth/$'
@@ -132,7 +132,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/otp'
     | '/app'
-    | '/new'
+    | '/create'
     | '/$org/calendar'
     | '/$org/lorem'
     | '/api/auth/$'
@@ -145,7 +145,7 @@ export interface FileRouteTypes {
     | '/(auth)/login'
     | '/(auth)/otp'
     | '/_app/app'
-    | '/_app/new'
+    | '/_app/create'
     | '/_app/$org/calendar'
     | '/_app/$org/lorem'
     | '/api/auth/$'
@@ -204,11 +204,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppAppRouteImport
       parentRoute: typeof AppRouteRoute
     }
-    '/_app/new': {
-      id: '/_app/new'
-      path: '/new'
-      fullPath: '/new'
-      preLoaderRoute: typeof AppNewRouteImport
+    '/_app/create': {
+      id: '/_app/create'
+      path: '/create'
+      fullPath: '/create'
+      preLoaderRoute: typeof AppCreateRouteImport
       parentRoute: typeof AppRouteRoute
     }
     '/_app/$org/': {
@@ -261,13 +261,13 @@ const AppOrgRouteRouteWithChildren = AppOrgRouteRoute._addFileChildren(
 interface AppRouteRouteChildren {
   AppOrgRouteRoute: typeof AppOrgRouteRouteWithChildren
   AppAppRoute: typeof AppAppRoute
-  AppNewRoute: typeof AppNewRoute
+  AppCreateRoute: typeof AppCreateRoute
 }
 
 const AppRouteRouteChildren: AppRouteRouteChildren = {
   AppOrgRouteRoute: AppOrgRouteRouteWithChildren,
   AppAppRoute: AppAppRoute,
-  AppNewRoute: AppNewRoute,
+  AppCreateRoute: AppCreateRoute,
 }
 
 const AppRouteRouteWithChildren = AppRouteRoute._addFileChildren(

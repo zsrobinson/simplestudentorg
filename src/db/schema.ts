@@ -1,3 +1,4 @@
+import { defineRelations, defineRelationsPart } from "drizzle-orm";
 import { integer, snakeCase, text } from "drizzle-orm/sqlite-core";
 import { uuidv7 } from "uuidv7";
 
@@ -19,6 +20,8 @@ export const org = snakeCase.table("org", {
   id,
   slug: text().notNull().unique(),
   name: text().notNull().unique(),
-  description: text(),
+  description: text().notNull().default(""),
   ...timestamps,
 });
+
+export const appRelations = defineRelationsPart({ org });
