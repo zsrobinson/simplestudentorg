@@ -9,6 +9,7 @@ import {
   InputOTPSlot,
 } from "~/components/ui/input-otp";
 import { authClient } from "~/lib/auth-client";
+import { IndexHeader } from "../-header";
 
 const OTP_REGEXP = /^\d{6}$/g;
 
@@ -50,32 +51,35 @@ function RouteComponent() {
   };
 
   return (
-    <main className="p-4 flex flex-col gap-4">
-      <p>
-        Please enter the verification code sent to your email address:{" "}
-        <span className="font-semibold">{email}</span>.
-      </p>
+    <>
+      <IndexHeader />
+      <main className="p-4 flex flex-col gap-4">
+        <p>
+          Please enter the verification code sent to your email address:{" "}
+          <span className="font-semibold">{email}</span>.
+        </p>
 
-      <form onSubmit={onSubmit} className="flex gap-2" ref={formRef}>
-        <InputOTP
-          maxLength={6}
-          name="otp"
-          pattern={REGEXP_ONLY_DIGITS}
-          autoFocus
-        >
-          <InputOTPGroup>
-            <InputOTPSlot index={0} />
-            <InputOTPSlot index={1} />
-            <InputOTPSlot index={2} />
-            <InputOTPSlot index={3} />
-            <InputOTPSlot index={4} />
-            <InputOTPSlot index={5} />
-          </InputOTPGroup>
-        </InputOTP>
+        <form onSubmit={onSubmit} className="flex gap-2" ref={formRef}>
+          <InputOTP
+            maxLength={6}
+            name="otp"
+            pattern={REGEXP_ONLY_DIGITS}
+            autoFocus
+          >
+            <InputOTPGroup>
+              <InputOTPSlot index={0} />
+              <InputOTPSlot index={1} />
+              <InputOTPSlot index={2} />
+              <InputOTPSlot index={3} />
+              <InputOTPSlot index={4} />
+              <InputOTPSlot index={5} />
+            </InputOTPGroup>
+          </InputOTP>
 
-        <Button type="submit">Verify</Button>
-        {error && <p className="text-destructive">{error}</p>}
-      </form>
-    </main>
+          <Button type="submit">Verify</Button>
+          {error && <p className="text-destructive">{error}</p>}
+        </form>
+      </main>
+    </>
   );
 }

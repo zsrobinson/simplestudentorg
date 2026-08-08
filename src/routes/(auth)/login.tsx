@@ -1,5 +1,5 @@
 import { createFileRoute, redirect, useNavigate } from "@tanstack/react-router";
-import { MailIcon, SearchIcon } from "lucide-react";
+import { MailIcon } from "lucide-react";
 import { useState } from "react";
 import z from "zod";
 import { Button } from "~/components/ui/button";
@@ -9,10 +9,13 @@ import {
   InputGroupInput,
 } from "~/components/ui/input-group";
 import { authClient } from "~/lib/auth-client";
+import { getSession } from "~/lib/auth-functions";
+import { IndexHeader } from "../-header";
 
 export const Route = createFileRoute("/(auth)/login")({
-  beforeLoad: ({ context }) => {
-    if (context.session) throw redirect({ to: "/" });
+  beforeLoad: async () => {
+    const session = await getSession();
+    if (session) throw redirect({ to: "/" });
   },
   component: RouteComponent,
 });
@@ -42,23 +45,26 @@ function RouteComponent() {
   };
 
   return (
-    <main className="flex flex-col gap-4 p-4">
-      <p>
-        To login or create an account, provide your email below and we'll send
-        you a code.
-      </p>
+    <>
+      <IndexHeader />
+      <main className="flex flex-col gap-4 p-4">
+        <p>
+          To login or create an account, provide your email below and we'll send
+          you a code.
+        </p>
 
-      <form onSubmit={onSubmit} className="flex gap-2">
-        <InputGroup className="max-w-xs">
-          <InputGroupAddon>
-            <MailIcon />
-          </InputGroupAddon>
-          <InputGroupInput type="email" name="email" placeholder="Email" />
-        </InputGroup>
+        <form onSubmit={onSubmit} className="flex gap-2">
+          <InputGroup className="max-w-xs">
+            <InputGroupAddon>
+              <MailIcon />
+            </InputGroupAddon>
+            <InputGroupInput type="email" name="email" placeholder="Email" />
+          </InputGroup>
 
-        <Button type="submit">Submit</Button>
-        {error && <p className="text-destructive">{error}</p>}
-      </form>
-    </main>
+          <Button type="submit">Submit</Button>
+          {error && <p className="text-destructive">{error}</p>}
+        </form>
+      </main>
+    </>
   );
 }
