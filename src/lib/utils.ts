@@ -14,3 +14,7 @@ export function zodParseResult<T>(
   const result = schema.safeParse(data);
   return result.success ? ok(result.data) : err(result.error);
 }
+
+export const raise = (e: unknown): never => {
+  throw e;
+};

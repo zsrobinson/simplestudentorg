@@ -1,4 +1,6 @@
+import { useSuspenseQuery } from "@tanstack/react-query";
 import { getRouteApi, useLocation, useNavigate } from "@tanstack/react-router";
+import { router } from "better-auth/api";
 import { PlusIcon, SlashIcon } from "lucide-react";
 import {
   Select,
@@ -8,7 +10,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "~/components/ui/select";
-import { MOCK_ORGS } from "~/lib/constants";
+import { getOrgsQuery } from "~/lib/org-queries";
 
 const route = getRouteApi("/_app");
 
@@ -30,7 +32,11 @@ export function AppHeader() {
 function OrgSwitcher() {
   const navigate = useNavigate();
   const pathname = useLocation({ select: (l) => l.pathname });
-  const items = [...MOCK_ORGS, { label: "New", value: "new" }];
+  const { data: orgs } = useSuspenseQuery(getOrgsQuery);
+  const items = [
+    ...orgs.map((o) => ({ label: o.name, value: o.slug })),
+    { label: "New", value: "new" },
+  ];
 
   return (
     <Select
@@ -48,9 +54,9 @@ function OrgSwitcher() {
 
       <SelectContent>
         <SelectGroup>
-          {MOCK_ORGS.map((item) => (
-            <SelectItem key={item.value} value={item.value}>
-              {item.label}
+          {orgs.map((o) => (
+            <SelectItem key={o.slug} value={o.slug}>
+              {o.name}
             </SelectItem>
           ))}
         </SelectGroup>

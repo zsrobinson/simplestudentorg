@@ -1,13 +1,15 @@
 import { createFileRoute, Outlet, redirect } from "@tanstack/react-router";
 import { sessionQuery } from "~/lib/auth-queries";
+import { getOrgsQuery } from "~/lib/org-queries";
 import { AppHeader } from "./-header";
 
 export const Route = createFileRoute("/_app")({
-  beforeLoad: async ({ context: { queryClient } }) => {
-    const session = await queryClient.ensureQueryData(sessionQuery);
+  beforeLoad: async ({ context }) => {
+    const session = await context.queryClient.ensureQueryData(sessionQuery);
     if (!session) throw redirect({ to: "/" });
     return { ...session };
   },
+  loader: ({ context }) => context.queryClient.ensureQueryData(getOrgsQuery),
   component: RouteComponent,
 });
 

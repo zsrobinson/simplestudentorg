@@ -1,12 +1,24 @@
-// import { sql } from "drizzle-orm";
-// import { integer, sqliteTable, text } from "drizzle-orm/sqlite-core";
+import { integer, snakeCase, text } from "drizzle-orm/sqlite-core";
+import { uuidv7 } from "uuidv7";
 
-// export const todos = sqliteTable("orgs", {
-//   id: integer({ mode: "number" }).primaryKey({
-//     autoIncrement: true,
-//   }),
-//   name: text().notNull(),
-//   createdAt: integer("created_at", { mode: "timestamp" }).default(
-//     sql`(unixepoch())`,
-//   ),
-// });
+const id = text("id")
+  .primaryKey()
+  .$defaultFn(() => uuidv7());
+
+const timestamps = {
+  createdAt: integer("created_at", { mode: "timestamp" })
+    .notNull()
+    .$defaultFn(() => new Date()),
+  updatedAt: integer("updated_at", { mode: "timestamp" })
+    .notNull()
+    .$defaultFn(() => new Date())
+    .$onUpdate(() => new Date()),
+};
+
+export const org = snakeCase.table("org", {
+  id,
+  slug: text().notNull().unique(),
+  name: text().notNull().unique(),
+  description: text(),
+  ...timestamps,
+});
