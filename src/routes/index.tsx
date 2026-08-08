@@ -1,13 +1,8 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Button } from "~/components/ui/button";
-import { getSession } from "~/lib/auth-functions";
 import { IndexHeader } from "./-header";
 
 export const Route = createFileRoute("/")({
-  beforeLoad: async () => {
-    const session = await getSession();
-    return { ...session };
-  },
   component: Home,
 });
 

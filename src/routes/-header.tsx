@@ -3,7 +3,7 @@ import { Link, UserIcon } from "lucide-react";
 import { Button } from "~/components/ui/button";
 import { authClient } from "~/lib/auth-client";
 
-const route = getRouteApi("/");
+const route = getRouteApi("__root__");
 
 export function IndexHeader() {
   const { session, user } = route.useRouteContext();

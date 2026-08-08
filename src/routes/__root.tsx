@@ -7,11 +7,15 @@ import {
   Scripts,
 } from "@tanstack/react-router";
 import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
-
+import { getSession } from "~/lib/auth-functions";
 import appCss from "../styles.css?url";
 
 export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
   {
+    beforeLoad: async () => {
+      const session = await getSession();
+      return { ...session };
+    },
     head: () => ({
       meta: [
         { charSet: "utf-8" },
